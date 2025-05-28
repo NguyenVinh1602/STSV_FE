@@ -1,34 +1,34 @@
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
+interface FormProps {
+    onMessageSent: (content: string) => void;
+}
 
-export const Form = () => {
+export const Form = ({ onMessageSent }: FormProps) => {
     const [message, setMessage] = useState<string>("");
 
-    const handleSendMessage = async () => {
-        if (message === "") return;
-        console.log("message sent");
-        // const temp = message;
+    const handleSendMessage = () => {
+        if (message.trim() === "") return;
+        // console.log("message sent (mock):", message);
+
+        // Gọi callback và truyền nội dung tin nhắn đi
+        onMessageSent(message);
         setMessage("");
-        // await sendMessage({
-        //     role: "user",
-        //     content: temp,
-        //     chatId: chat._id,
-        // });
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             handleSendMessage();
         }
     }
 
     return (
-        <div className="relative px-2 sm:px-12 md:px-52 lg:pr-[500px] 2xl:px-96 w-full bg-neutral-800">
+        <div className="w-full bg-neutral-800 py-2 rounded-xl flex items-center">
             <Input
                 placeholder="Message TalkGPT..."
-                className="border-[1px] border-neutral-500 ring-none rounded-xl bg-inherit text-neutral-200 placeholder:text-neutral-400 h-12"
+                className="flex-grow border-[1px] border-neutral-500 ring-none rounded-xl bg-inherit text-neutral-200 placeholder:text-neutral-400 h-12 px-4"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyDown}

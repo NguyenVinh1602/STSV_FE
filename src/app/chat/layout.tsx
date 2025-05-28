@@ -11,7 +11,7 @@ export default function ChatLayout({
     <div className="flex h-full text-white bg-neutral-900">
     <SidebarProvider>
       <AppSidebar/>
-        <div className="bg-neutral-900"> 
+        <div className="bg-neutral-800"> 
         <SidebarTrigger/>
         </div>
         <div className="h-full w-full">

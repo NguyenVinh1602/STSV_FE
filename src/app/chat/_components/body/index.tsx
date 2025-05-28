@@ -3,43 +3,38 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useRef} from "react";
 import { MessageBox } from "./message-box";
-import { messages } from "@/convex/data/messages";
+import { Message } from "@/convex/types/message";
 
-// interface BodyProps {
-//     chatId: Id<"chats">;
-// }
+interface BodyProps {
+    messages: Message[];
+}
 
-export const Body = (
-  // { chatId }: BodyProps
-) => {
+export const Body = ({ messages }: BodyProps) => {
     const scrollRef = useRef<HTMLDivElement>(null);
-    // const [showButton, setShowButton] = useState(false);
-
+ 
     useEffect(() => {
         scrollToBottom();
-    }, [messages])
+    }, [messages]) 
 
     const scrollToBottom = () => {
         if (scrollRef.current) {
-            scrollRef.current.scrollIntoView({ behavior: "auto" });
+            scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" }); 
         }
     };
 
     return (
-        <>
-            <ScrollArea
-                className="max-h-[calc(100%-150px)] h-full w-full flex-1"
-            >
-                <div className="px-4 sm:px-12 md:px-52 2xl:px-[430px] relative">
-                    {messages.map((message) => (
-                        <MessageBox
-                            key={message.id}
-                            message={message}
-                        />
-                    ))}
-                </div>
-                <div ref={scrollRef} />
-            </ScrollArea>
-        </>
+        <ScrollArea
+            className="h-full w-full flex-1 my-4" 
+        >
+            <div className="w-full pb-4"> 
+                {messages.map((message) => (
+                    <MessageBox
+                        key={message.id}
+                        message={message}
+                    />
+                ))}
+            </div>
+            <div ref={scrollRef} />
+        </ScrollArea>
     );
 };
