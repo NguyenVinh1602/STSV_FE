@@ -1,14 +1,13 @@
-"use client"; // Ensures this is a Client Component in Next.js
+"use client";
 
-import React, { useState } from 'react'; // Import useState
+import React, { useState } from 'react'; 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner"; // Ensure you have 'sonner' installed and ToastProvider configured
+import { toast } from "sonner"; 
 
-// Import components from shadcn/ui.
-// Make sure you have installed and added these components to your project.
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { EyeIcon, EyeOffIcon } from 'lucide-react'; // Import eye icons from lucide-react
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
 
 // Define form validation schema
 const formSchema = z.object({
@@ -27,10 +26,9 @@ const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters."),
 });
 
-// Your LoginForm component, with logic preserved and display refined
 export function LoginForm() {
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false); 
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,23 +38,22 @@ export function LoginForm() {
     },
   });
 
-  // Function to handle form submission
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Login data:", values);
 
-    // Simulated login logic
     if (values.username === "user" && values.password === "password123") {
       toast.success("Login successful!", {
         description: "You have successfully logged into the system.",
         duration: 3000,
       });
-      router.push("/chat"); // Redirect after successful login
+      router.push("/chat");
     } else {
       toast.error("Login failed.", {
         description: "Incorrect username or password.",
         duration: 3000,
       });
-      form.setError("password", { message: "Incorrect password." }); // Set error for password field
+      form.setError("password", { message: "Incorrect password." });
     }
   }
 
@@ -70,7 +67,7 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                {/* Added text-gray-900 to ensure text visibility */}
+            
                 <Input placeholder="you@example.com" {...field} className="text-gray-900" />
               </FormControl>
               <FormMessage />
@@ -84,19 +81,19 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <div className="relative"> {/* Use a relative container for the input and icon */}
+                <div className="relative"> 
                   <Input
-                    type={showPassword ? "text" : "password"} // Toggle input type
+                    type={showPassword ? "text" : "password"} 
                     placeholder="Enter your password"
                     {...field}
-                    className="pr-10 text-gray-900" // Added text-gray-900 and padding to the right for the icon
+                    className="pr-10 text-gray-900" 
                   />
                   <Button
-                    type="button" // Important: Prevent form submission
-                    variant="ghost" // Use ghost variant for a subtle button
-                    size="sm" // Small size for the icon button
+                    type="button" 
+                    variant="ghost" 
+                    size="sm" 
                     className="absolute inset-y-0 right-0 flex items-center justify-center h-full px-3"
-                    onClick={() => setShowPassword((prev) => !prev)} // Toggle password visibility
+                    onClick={() => setShowPassword((prev) => !prev)} 
                   >
                     {showPassword ? (
                       <EyeOffIcon className="h-4 w-4 text-gray-500" />
@@ -113,9 +110,9 @@ export function LoginForm() {
         <Button type="submit" className="w-full">
           Login
         </Button>
-        <p className="mt-4 text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+        <p className="mt-4 text-center text-sm text-gray-900 dark:text-white">
+            Don&#39;t have an account?{' '}
+            <a href="#" className="font-medium text-blue-300 hover:text-blue-500">
                 Sign Up
             </a>
         </p>
