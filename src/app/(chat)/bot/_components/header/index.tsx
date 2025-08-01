@@ -1,5 +1,5 @@
-import UserDropdownMenu from "@/components/user-dropdown-menu";
-import MoreActionsDropdown from "@/components/more-actions-dropdown";
+import UserDropdownMenu from "@/components/chat/user-dropdown-menu";
+import MoreActionsDropdown from "@/components/chat/more-actions-dropdown";
 
 export const Header = () => {
     return (

@@ -1,103 +1,83 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+import Head from 'next/head';
+import { Bot, User } from 'lucide-react';
+import Header from '@/components/landing-page/Header';
+import FeatureBlock from '@/components/landing-page/FeatureBlock';
+import Modal from '@/components/landing-page/Modal';
+import Hero from '@/components/landing-page/Hero';
+import Footer from '@/components/landing-page/Footer';
+import { useRouter } from 'next/navigation';
+export default function App() {
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>('');
+  const [modalMessage, setModalMessage] = useState<string>('');
+
+  const showModal = (title: string, message: string) => {
+    setModalTitle(title);
+    setModalMessage(message);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleAuthClick = (type: 'login' | 'register') => {
+    if (type === 'login') {
+           router.push('/login');
+    } else {
+       router.push('/register');
+    }
+  };
+
+  const handleFeatureClick = (feature: 'chatbot' | 'stranger-chat') => {
+    if (feature === 'chatbot') {
+      router.push('/bot');
+    } else {
+      showModal('Chat với người lạ', 'Chuyển hướng đến trang chat với người lạ.');
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      <Head>
+        <title>STSV - Chatbot & Chat với người lạ</title>
+        <meta name="description" content="Chào mừng đến với STSV, nơi bạn có thể trò chuyện với AI hoặc chat ẩn danh với một người lạ." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+      </Head>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+      <Modal title={modalTitle} message={modalMessage} isOpen={isModalOpen} onClose={closeModal} />
+
+      <div className="min-h-screen bg-neutral-900 text-white font-inter flex flex-col">
+        <Header onLoginClick={() => handleAuthClick('login')} onRegisterClick={() => handleAuthClick('register')} />
+        <main className="flex-grow flex flex-col items-center justify-center text-center p-4">
+          <Hero />
+          <div className="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
+            <FeatureBlock
+              title="Trò chuyện với Chatbot"
+              description="Khám phá sức mạnh của trí tuệ nhân tạo. Đặt câu hỏi, tìm kiếm thông tin hoặc chỉ đơn giản là trò chuyện với một người bạn AI."
+              icon={<Bot width={64} height={64} />}
+              iconColor="text-indigo-400"
+              borderColor="hover:border-indigo-500"
+              onClick={() => handleFeatureClick('chatbot')}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+            <FeatureBlock
+              title="Chat với người lạ"
+              description="Kết nối ngẫu nhiên với một người nào đó trên thế giới. Chia sẻ suy nghĩ, câu chuyện hoặc chỉ là một lời chào ẩn danh."
+              icon={<User width={64} height={64} />}
+              iconColor="text-purple-400"
+              borderColor="hover:border-purple-500"
+              onClick={() => handleFeatureClick('stranger-chat')}
+            />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }

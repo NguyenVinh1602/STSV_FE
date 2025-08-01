@@ -62,7 +62,7 @@ const dummyChatHistory = [
   },
 ];
 
-export function AppSidebar() {
+export function BotSidebar() {
   const handleAdd = () => {
     alert("Add new chat functionality is not implemented yet.");
   }
@@ -82,7 +82,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Button
-                  variant="dark"
+                  variant="ghost"
                   onClick={handleAdd}
                 >
                   <SquarePen className="w-4 h-4" />

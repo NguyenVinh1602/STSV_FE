@@ -1,6 +1,6 @@
-import "../globals.css";
+
 import { SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar"
-import { AppSidebar } from "../../components/app-sidebar";
+import { BotSidebar } from "@/components/chat/bot/bot-sidebar";
 
 export default function ChatLayout({
   children,
@@ -10,7 +10,7 @@ export default function ChatLayout({
   return (
     <div className="flex h-full text-white bg-neutral-900">
     <SidebarProvider>
-      <AppSidebar/>
+      <BotSidebar/>
         <div className="bg-neutral-800"> 
         <SidebarTrigger/>
         </div>
