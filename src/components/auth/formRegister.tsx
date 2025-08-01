@@ -6,6 +6,8 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { useState } from "react"; 
 import { Eye, EyeOff } from "lucide-react"; 
+import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,25 +23,26 @@ import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
   username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "Tên người dùng phải có ít nhất 2 ký tự.",
   }),
   email: z.string().email({
-    message: "Invalid email address.",
+    message: "Địa chỉ email không hợp lệ.",
   }),
   password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
+    message: "Mật khẩu phải có ít nhất 6 ký tự.",
   }),
   confirmPassword: z.string().min(6, {
-    message: "Confirm password must be at least 6 characters.",
+    message: "Xác nhận mật khẩu phải có ít nhất 6 ký tự.",
   }),
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match.",
+  message: "Mật khẩu không khớp.",
   path: ["confirmPassword"],
 });
 
 type SignUpFormValues = z.infer<typeof formSchema>;
 
-export function SignUpForm() {
+export function RegisterForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -55,10 +58,12 @@ export function SignUpForm() {
 
   function onSubmit(values: SignUpFormValues) {
     console.log("Signup data:", values);
-    toast.success("Signup Successful!", {
-      description: "Your account has been created.",
+    toast.success("Đăng ký thành công!", {
+      description: "Tài khoản của bạn đã được tạo thành công.",
       duration: 3000,
     });
+    // Chuyển hướng đến trang đăng nhập sau khi đăng ký thành công
+    router.push('/login');
   }
 
   return (
@@ -70,9 +75,9 @@ export function SignUpForm() {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Tên người dùng</FormLabel>
               <FormControl>
-                <Input placeholder="Your username" {...field} />
+                <Input placeholder="Tên người dùng của bạn" {...field} className="text-white bg-neutral-700 border-neutral-600 focus:ring-indigo-500 focus:border-indigo-500" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -86,7 +91,7 @@ export function SignUpForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="your@example.com" type="email" {...field} />
+                <Input placeholder="ví dụ: ban@email.com" type="email" {...field} className="text-white bg-neutral-700 border-neutral-600 focus:ring-indigo-500 focus:border-indigo-500" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -98,19 +103,20 @@ export function SignUpForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Mật khẩu</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
-                    placeholder="Your password"
+                    placeholder="Mật khẩu của bạn"
                     type={showPassword ? "text" : "password"}
                     {...field}
+                    className="pr-10 text-white bg-neutral-700 border-neutral-600 focus:ring-indigo-500 focus:border-indigo-500"
                   />
                   <button
                     type="button" 
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-400 hover:text-white"
+                    aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -130,19 +136,20 @@ export function SignUpForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel>Xác nhận mật khẩu</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
-                    placeholder="Re-enter your password"
+                    placeholder="Nhập lại mật khẩu của bạn"
                     type={showConfirmPassword ? "text" : "password"}
                     {...field}
+                    className="pr-10 text-white bg-neutral-700 border-neutral-600 focus:ring-indigo-500 focus:border-indigo-500"
                   />
                   <button
                     type="button" 
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-                    aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-400 hover:text-white"
+                    aria-label={showConfirmPassword ? "Ẩn xác nhận mật khẩu" : "Hiện xác nhận mật khẩu"}
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -156,7 +163,13 @@ export function SignUpForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">Sign Up</Button>
+        <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-full shadow-lg">Đăng ký</Button>
+         <p className="mt-4 text-center text-sm text-neutral-400">
+                    Bạn đã có tài khoản?{' '}
+                    <Link href="login" className="font-medium text-indigo-400 hover:text-indigo-300">
+                        Đăng nhập
+                    </Link>
+                </p>
       </form>
     </Form>
   );
